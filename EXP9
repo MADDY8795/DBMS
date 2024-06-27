@@ -1,0 +1,97 @@
+mysql> use exp9
+Database changed
+mysql> show tables;
+Empty set (0.01 sec)
+
+mysql> use exp6
+Database changed
+mysql> show tables;
++----------------+
+| Tables_in_exp6 |
++----------------+
+| boats          |
+| sailors        |
++----------------+
+2 rows in set (0.00 sec)
+
+mysql> use exp4_5
+Database changed
+mysql> show tables;
++------------------+
+| Tables_in_exp4_5 |
++------------------+
+| bus              |
+| cancellation     |
+| passenger        |
+| passenger_ticket |
+| reservation      |
+| ticket           |
++------------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from bus;
++-------+-----------+-------------+--------------+
+| RegID | Source    | Destination | CoachType    |
++-------+-----------+-------------+--------------+
+| AP123 | Hyderabad | Banglore    | Volvo        |
+| AP234 | Mumbai    | Hyderabad   | Semi_sleeper |
+| AP345 | Delhi     | Hyderabad   | Volvo        |
++-------+-----------+-------------+--------------+
+3 rows in set (0.03 sec)
+
+mysql> Delimiter $$
+mysql> CREATE PROCEDURE BUS_PROC1()
+    -> BEGIN
+    -> SELECT * FROM BUS;
+    -> END$$
+ERROR 1304 (42000): PROCEDURE BUS_PROC1 already exists
+mysql> CALL BUS_PROC1()$$
++-------+-----------+-------------+--------------+
+| RegID | Source    | Destination | CoachType    |
++-------+-----------+-------------+--------------+
+| AP123 | Hyderabad | Banglore    | Volvo        |
+| AP234 | Mumbai    | Hyderabad   | Semi_sleeper |
+| AP345 | Delhi     | Hyderabad   | Volvo        |
++-------+-----------+-------------+--------------+
+3 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> Delimiter $$
+mysql> CREATE PROCEDURE SAMPLE2()
+    -> BEGIN
+    -> DECLARE X INT(3);
+    -> SELECT X;
+    -> END$$
+ERROR 1304 (42000): PROCEDURE SAMPLE2 already exists
+mysql> CALL SAMPLE2()$$
++------+
+| X    |
++------+
+|   10 |
++------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> Delimiter $$
+mysql> CREATE PROCEDURE SIMPLE_PROC(OUT PARAM INT)
+    -> BEGIN
+    -> SELECT COUNT(*) INTO PARAM FROM BUS;
+    -> END$$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CALL SIMPLE_PROC(@A)$$
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT @A$$
++------+
+| @A   |
++------+
+|    3 |
++------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql>
+mysql>
