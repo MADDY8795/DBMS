@@ -1,0 +1,129 @@
+mysql> USE EXP6
+Database changed
+mysql> SHOW TABLES;
+    -> $$
++----------------+
+| Tables_in_exp6 |
++----------------+
+| boats          |
+| sailors        |
++----------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT AVG(AGE) FROM SAILORS WHERE RATING=10;
+    -> $$
++----------+
+| AVG(AGE) |
++----------+
+|     25.5 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> SELECT COUNT(*) FROM SAILORS;$$
++----------+
+| COUNT(*) |
++----------+
+|       10 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT MAX(AGE) FROM SAILORS;$$
++----------+
+| MAX(AGE) |
++----------+
+|     63.5 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT MIN(AGE) FROM SAILORS;$$
++----------+
+| MIN(AGE) |
++----------+
+|       16 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT SUM(AGE) FROM SAILORS;$$
++----------+
+| SUM(AGE) |
++----------+
+|      374 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> DESC SAILORS;$$
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| sid    | int         | NO   | PRI | NULL    |       |
+| sname  | varchar(30) | YES  |     | NULL    |       |
+| rating | int         | YES  |     | NULL    |       |
+| age    | double      | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT SNAME,RATING FROM SAILORS ORDER BY age;
+    -> $$
++---------+--------+
+| SNAME   | RATING |
++---------+--------+
+| Zorba   |     10 |
+| Andy    |      8 |
+| Art     |      3 |
+| Brutus  |      1 |
+| Rusty   |     10 |
+| Horatio |      7 |
+| Horatio |      9 |
+| Dustin  |      7 |
+| Lubber  |      8 |
+| Bob     |      3 |
++---------+--------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT SNAME,AVG(RATING) AS AVG FROM SAILORS GROUP BY SNAME;
+    -> $$
++---------+---------+
+| SNAME   | AVG     |
++---------+---------+
+| Dustin  |  7.0000 |
+| Brutus  |  1.0000 |
+| Lubber  |  8.0000 |
+| Andy    |  8.0000 |
+| Rusty   | 10.0000 |
+| Horatio |  8.0000 |
+| Zorba   | 10.0000 |
+| Art     |  3.0000 |
+| Bob     |  3.0000 |
++---------+---------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT SNAME,AVG(RATING) AS AVG FROM SAILORS GROUP BY SNAME HAVING AVG(RATING)>8;$$
++-------+---------+
+| SNAME | AVG     |
++-------+---------+
+| Rusty | 10.0000 |
+| Zorba | 10.0000 |
++-------+---------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE VIEW SSAILORS(SNAME,SID) AS SELECT S.SNAME,S.SID FROM SAILORS S WHERE AGE=35;$$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM SSAILORS;
+    -> $$
++---------+-----+
+| SNAME   | SID |
++---------+-----+
+| Rusty   |  58 |
+| Horatio |  64 |
++---------+-----+
+2 rows in set (0.00 sec)
+
+mysql> DROP VIEW SSAILORS;
+    -> $$
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DESC SSAILORS;
+    -> $$
+ERROR 1146 (42S02): Table 'exp6.ssailors' doesn't exist
+mysql>
